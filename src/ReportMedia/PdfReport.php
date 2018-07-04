@@ -36,6 +36,7 @@ class PdfReport extends ReportGenerator
 		} catch (\ReflectionException $e) {
 			try {
 				$pdf = \App::make('dompdf.wrapper');
+				$pdf->getDomPDF()->set_option("enable_php", true);
 			} catch (\ReflectionException $e) {
 				throw new \Exception('Please install either barryvdh/laravel-snappy or laravel-dompdf to generate PDF Report!');
 			}
