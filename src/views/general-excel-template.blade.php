@@ -15,6 +15,12 @@
 			table .bold {
 				font-weight: 600;
 			}
+			table .italic {
+				font-style: italic;
+			}
+			table .oblique {
+				font-style: oblique;
+			}
 			.bg-black {
 				background-color: #000;
 			}
