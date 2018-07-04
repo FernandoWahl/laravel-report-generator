@@ -158,7 +158,7 @@
 
 				    			if ($isOnSameGroup === false) {
 		    						echo '<tr class="bg-black f-white">
-		    							<td colspan="' . $grandTotalSkip . '"><b>Grand Total</b></td>';
+		    							<td colspan="' . $grandTotalSkip . '"><b>Total geral</b></td>';
 										$dataFound = false;
 		    							foreach ($columns as $colName => $colData) {
 		    								if (array_key_exists($colName, $showTotalColumns)) {
@@ -176,7 +176,7 @@
 		    							}
 		    						echo '</tr>';//<tr style="height: 10px;"><td colspan="99">&nbsp;</td></tr>';
 
-									// Reset No, Reset Grand Total
+									// Reset No, Reset Total geral
 		    						$no = 1;
 		    						foreach ($showTotalColumns as $showTotalColumn => $type) {
 		    							$total[$showTotalColumn] = 0;
@@ -229,7 +229,7 @@
 		            ?>
 					@if ($showTotalColumns != [] && $ctr > 1)
 						<tr class="bg-black f-white">
-							<td colspan="{{ $grandTotalSkip }}"><b>Grand Total</b></td> {{-- For Number --}}
+							<td colspan="{{ $grandTotalSkip }}"><b>Total geral</b></td> {{-- For Number --}}
 							<?php $dataFound = false; ?>
 							@foreach ($columns as $colName => $colData)
 								@if (array_key_exists($colName, $showTotalColumns))
@@ -253,13 +253,13 @@
 	    <script type="text/php">
 	    	@if (strtolower($orientation) == 'portrait')
 	        if ( isset($pdf) ) {
-	            $pdf->page_text(30, ($pdf->get_height() - 26.89), "Date Printed: " . date('d M Y H:i:s'), null, 10);
-	        	$pdf->page_text(($pdf->get_width() - 84), ($pdf->get_height() - 26.89), "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10);
+	            $pdf->page_text(30, ($pdf->get_height() - 26.89), "App Consultas - " . date('d M Y H:i:s'), null, 10);
+	        	$pdf->page_text(($pdf->get_width() - 84), ($pdf->get_height() - 26.89), "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10);
 	        }
 		    @elseif (strtolower($orientation) == 'landscape')
 		    if ( isset($pdf) ) {
-		        $pdf->page_text(30, ($pdf->get_height() - 26.89), "Date Printed: " . date('d M Y H:i:s'), null, 10);
-		    	$pdf->page_text(($pdf->get_width() - 84), ($pdf->get_height() - 26.89), "Page {PAGE_NUM} of {PAGE_COUNT}", null, 10);
+		        $pdf->page_text(30, ($pdf->get_height() - 26.89), "App Consultas - " . date('d M Y H:i:s'), null, 10);
+		    	$pdf->page_text(($pdf->get_width() - 84), ($pdf->get_height() - 26.89), "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10);
 		    }
 		    @endif
 	    </script>
