@@ -118,7 +118,7 @@
 		    		<thead>
 			    		<tr>
 							@if ($showNumColumn)
-				    			<th class="left">No</th>
+				    			<th class="left">&‌ordm;</th>
 							@endif
 			    			@foreach ($columns as $colName => $colData)
 			    				@if (array_key_exists($colName, $editColumns))
