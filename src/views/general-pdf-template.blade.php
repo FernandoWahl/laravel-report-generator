@@ -25,7 +25,7 @@
 		    .head-content{
 		    	padding-bottom: 4px;
 		    	border-style: none none ridge none;
-		    	font-size: 18px;
+		    	font-size: 14px;
 		    }
 		    table.table {
 		    	font-size: 13px;
@@ -102,7 +102,7 @@
 							@if ($metaCtr % 2 == 0)
 							<tr>
 							@endif
-								<td><span style="color:#808080;">{{ $name }}</span>: {{ ucwords($value) }}</td>
+								<td><span style="color:#808080;">{{ $name }}</span>: {{ ($value) }}</td>
 							@if ($metaCtr % 2 == 1)
 							</tr>
 							@endif
