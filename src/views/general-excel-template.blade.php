@@ -39,13 +39,8 @@
 		$ctr = 1;
 		$no = 1;
 		$currentGroupByData = [];
-		$total = [];
 		$isOnSameGroup = true;
 		$grandTotalSkip = 1;
-
-		foreach ($showTotalColumns as $column => $type) {
-			$total[$column] = 0;
-		}
 
 		if ($showTotalColumns != []) {
 			foreach ($columns as $colName => $colData) {
@@ -90,7 +85,7 @@
     		<?php
     		$chunkRecordCount = ($limit == null || $limit > 50000) ? 50000 : $limit + 1;
     		$__env = isset($__env) ? $__env : null;
-			$query->chunk($chunkRecordCount, function($results) use(&$ctr, &$no, &$total, &$currentGroupByData, &$isOnSameGroup, $grandTotalSkip, $headers, $columns, $limit, $editColumns, $showTotalColumns, $groupByArr, $applyFlush, $showNumColumn, $__env) {
+			$query->chunk($chunkRecordCount, function($results) use(&$ctr, &$no, &$currentGroupByData, &$isOnSameGroup, $grandTotalSkip, $headers, $columns, $limit, $editColumns, $showTotalColumns, $groupByArr, $applyFlush, $showNumColumn, $__env) {
 			?>
     		@foreach($results as $result)
 				<?php
@@ -119,11 +114,11 @@
 								$dataFound = false;
     							foreach ($columns as $colName => $colData) {
     								if (array_key_exists($colName, $showTotalColumns)) {
-    									if ($showTotalColumns[$colName] == 'point') {
-    										echo '<td class="right bg-black"><b>' . number_format($total[$colName], 2, '.', ',') . '</b></td>';
-    									} else {
-    										echo '<td class="right bg-black"><b>' . strtoupper($showTotalColumns[$colName]) . ' ' . number_format($total[$colName], 2, '.', ',') . '</b></td>';
-    									}
+										$class = 'right';
+										if (isset($editColumns[$colName]['class'])) {
+											$class = $editColumns[$colName]['class'];
+										}
+    									echo '<td class="'.$class.' bg-black"><b>' . $showTotalColumns[$colName] . '</b></td>';
     									$dataFound = true;
     								} else {
     									if ($dataFound) {
@@ -135,9 +130,6 @@
 
 							// Reset No, Reset Total geral
     						$no = 1;
-    						foreach ($showTotalColumns as $showTotalColumn => $type) {
-    							$total[$showTotalColumn] = 0;
-    						}
     						$isOnSameGroup = true;
     					}
 	    			}
@@ -170,10 +162,6 @@
 			    					}
 			    				}
 		    				}
-
-		    				if (array_key_exists($colName, $showTotalColumns)) {
-		    					$total[$colName] += $generatedColData;
-		    				}
 	    				?>
 	    				<td class="{{ $class }}">{{ $displayedColValue }}</td>
 	    			@endforeach
@@ -190,12 +178,13 @@
 					<?php $dataFound = false; ?>
 					@foreach ($columns as $colName => $colData)
 						@if (array_key_exists($colName, $showTotalColumns))
-							<?php $dataFound = true; ?>
-							@if ($showTotalColumns[$colName] == 'point')
-								<td class="bg-black right"><b>{{ number_format($total[$colName], 2, '.', ',') }}</b></td>
-							@else
-								<td class="bg-black right"><b>{{ strtoupper($showTotalColumns[$colName]) }} {{ number_format($total[$colName], 2, '.', ',') }}</b></td>
-							@endif
+							<?php $dataFound = true;
+								$class = 'right';
+								if (isset($editColumns[$colName]['class'])) {
+									$class = $editColumns[$colName]['class'];
+								}
+								?>
+								<td class="{{ $class }} bg-black"><b>{{ $showTotalColumns[$colName] }}</b></td>
 						@else
 							@if ($dataFound)
 								<td class="bg-black"></td>

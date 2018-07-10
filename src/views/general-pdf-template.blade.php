@@ -71,13 +71,8 @@
 		$ctr = 1;
 		$no = 1;
 		$currentGroupByData = [];
-		$total = [];
 		$isOnSameGroup = true;
 		$grandTotalSkip = 1;
-
-		foreach ($showTotalColumns as $column => $type) {
-			$total[$column] = 0;
-		}
 
 		if ($showTotalColumns != []) {
 			foreach ($columns as $colName => $colData) {
@@ -133,7 +128,7 @@
 		    		<?php
 		    		$chunkRecordCount = ($limit == null || $limit > 50000) ? 50000 : $limit + 1;
 		    		$__env = isset($__env) ? $__env : null;
-					$query->chunk($chunkRecordCount, function($results) use(&$ctr, &$no, &$total, &$currentGroupByData, &$isOnSameGroup, $grandTotalSkip, $columns, $limit, $editColumns, $showTotalColumns, $groupByArr, $applyFlush, $showNumColumn, $__env) {
+					$query->chunk($chunkRecordCount, function($results) use(&$ctr, &$no, &$currentGroupByData, &$isOnSameGroup, $grandTotalSkip, $columns, $limit, $editColumns, $showTotalColumns, $groupByArr, $applyFlush, $showNumColumn, $__env) {
 					?>
 		    		@foreach($results as $result)
 						<?php
@@ -155,34 +150,6 @@
 
 				    				$currentGroupByData[$groupBy] = $thisGroupByData[$groupBy];
 				    			}
-
-				    			if ($isOnSameGroup === false) {
-		    						echo '<tr class="bg-black f-white">
-		    							<td colspan="' . $grandTotalSkip . '"><b>Total geral</b></td>';
-										$dataFound = false;
-		    							foreach ($columns as $colName => $colData) {
-		    								if (array_key_exists($colName, $showTotalColumns)) {
-		    									if ($showTotalColumns[$colName] == 'point') {
-		    										echo '<td class="right"><b>' . number_format($total[$colName], 2, '.', ',') . '</b></td>';
-		    									} else {
-		    										echo '<td class="right"><b>' . strtoupper($showTotalColumns[$colName]) . ' ' . number_format($total[$colName], 2, '.', ',') . '</b></td>';
-		    									}
-		    									$dataFound = true;
-		    								} else {
-		    									if ($dataFound) {
-			    									echo '<td></td>';
-			    								}
-		    								}
-		    							}
-		    						echo '</tr>';//<tr style="height: 10px;"><td colspan="99">&nbsp;</td></tr>';
-
-									// Reset No, Reset Total geral
-		    						$no = 1;
-		    						foreach ($showTotalColumns as $showTotalColumn => $type) {
-		    							$total[$showTotalColumn] = 0;
-		    						}
-		    						$isOnSameGroup = true;
-		    					}
 			    			}
 						?>
 			    		<tr align="center" class="{{ ($no % 2 == 0) ? 'even' : 'odd' }}">
@@ -203,7 +170,6 @@
 				    					if (isset($editColumns[$colName]['class'])) {
 				    						$class = $editColumns[$colName]['class'];
 				    					}
-
 				    					if (isset($editColumns[$colName]['displayAs'])) {
 				    						$displayAs = $editColumns[$colName]['displayAs'];
 					    					if (is_object($displayAs) && $displayAs instanceof Closure) {
@@ -212,10 +178,6 @@
 					    						$displayedColValue = $displayAs;
 					    					}
 					    				}
-				    				}
-
-				    				if (array_key_exists($colName, $showTotalColumns)) {
-				    					$total[$colName] += $generatedColData;
 				    				}
 			    				?>
 			    				<td class="{{ $class }}">{{ $displayedColValue }}</td>
@@ -229,16 +191,17 @@
 		            ?>
 					@if ($showTotalColumns != [] && $ctr > 1)
 						<tr class="bg-black f-white">
-							<td colspan="{{ $grandTotalSkip }}"><b>Total geral</b></td> {{-- For Number --}}
+							<td colspan="{{ $grandTotalSkip }}"><b>Total geral</b></td>
 							<?php $dataFound = false; ?>
 							@foreach ($columns as $colName => $colData)
 								@if (array_key_exists($colName, $showTotalColumns))
-									<?php $dataFound = true; ?>
-									@if ($showTotalColumns[$colName] == 'point')
-										<td class="right"><b>{{ number_format($total[$colName], 2, '.', ',') }}</b></td>
-									@else
-										<td class="right"><b>{{ strtoupper($showTotalColumns[$colName]) }} {{ number_format($total[$colName], 2, '.', ',') }}</b></td>
-									@endif
+									<?php $dataFound = true;
+									$class = 'right';
+									if (isset($editColumns[$colName]['class'])) {
+										$class = $editColumns[$colName]['class'];
+									}
+									?>
+									<td class="{{ $class }}"><b>{{ $showTotalColumns[$colName] }}</b></td>
 								@else
 									@if ($dataFound)
 										<td></td>
