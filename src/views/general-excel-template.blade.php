@@ -163,7 +163,7 @@
 			    				}
 		    				}
 	    				?>
-	    				<td class="{{ $class }}">{{ $displayedColValue }}</td>
+	    				<td class="{{ $class }}">{!! $displayedColValue !!}</td>
 	    			@endforeach
 	    		</tr>
     			<?php $ctr++; $no++; ?>
